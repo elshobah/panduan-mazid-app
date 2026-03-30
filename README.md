@@ -2,7 +2,7 @@
 
 Repo ini berisi sumber dokumentasi resmi [Mazid](https://mazid.id), dibangun dengan [Mintlify](https://mintlify.com).
 
-**Live:** https://docs.mazid.id
+**Live:** https://panduan.mazid.id
 
 ## Tentang Mazid
 
@@ -59,7 +59,7 @@ Preview tersedia di `http://localhost:3000`.
 
 ## Deploy
 
-Perubahan di-deploy otomatis ke **https://docs.mazid.id** setelah push ke branch `main` (1–2 menit).
+Perubahan di-deploy otomatis ke **https://panduan.mazid.id** setelah push ke branch `main` (1–2 menit).
 
 ### GitHub Integration
 
@@ -136,7 +136,7 @@ mintlify broken-links
 ## Link & Referensi
 
 - **Website Mazid:** https://mazid.id
-- **Dokumentasi Live:** https://docs.mazid.id
+- **Dokumentasi Live:** https://panduan.mazid.id
 - **Dashboard App:** https://app.mazid.id
 - **Email:** hello@mazid.id
 - **Mintlify Docs:** https://mintlify.com/docs
