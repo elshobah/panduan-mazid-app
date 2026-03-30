@@ -1,55 +1,149 @@
-# Mintlify Starter Kit
+# mazid-docs — Dokumentasi Resmi Platform Mazid
 
-Use the starter kit to get your docs deployed and ready to customize.
+Repo ini berisi sumber dokumentasi resmi [Mazid](https://mazid.id), dibangun dengan [Mintlify](https://mintlify.com).
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+**Live:** https://docs.mazid.id
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+## Tentang Mazid
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+**Mazid** adalah platform SaaS untuk lembaga pendidikan di Indonesia. Tagline: *"Beyond administration."*
 
-## AI-assisted writing
+Satu platform melayani ratusan lembaga dengan isolasi data penuh melalui PostgreSQL Row Level Security (RLS).
 
-Set up your AI coding tool to work with Mintlify:
+### Modul Utama
 
-```bash
-npx skills add https://mintlify.com/docs
-```
+- **SPP & Keuangan** — tagihan, pembayaran, kode unik otomatis, tabungan santri
+- **Santri** — biodata, wali, NIS, kelas
+- **Presensi** — sesi kehadiran harian
+- **Hafalan** — target dan pencapaian hafalan Quran
+- **Perizinan** — pengajuan izin keluar/pulang
+- **Pelanggaran** — catatan disiplin dan sanksi
+- **PPDB** — penerimaan peserta didik baru (pendaftaran online tanpa login)
+- **Laporan** — ringkasan keuangan dan aktivitas
+- **Subscription** — paket Free, Basic, Pro, Enterprise
 
-This command installs Mintlify's documentation skill for your configured AI tools like Claude Code, Cursor, Windsurf, and others. The skill includes component reference, writing standards, and workflow guidance.
+### Audiens Dokumentasi
 
-See the [AI tools guides](/ai-tools) for tool-specific setup.
+1. **Admin Pesantren** — mengoperasikan platform sehari-hari
+2. **Orang Tua / Wali Santri** — menggunakan portal publik
+3. **Developer / Tim Teknis** — referensi API dan integrasi
+
+---
 
 ## Development
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+### Instalasi
 
-```
-npm i -g mint
-```
+Install Mintlify CLI (cukup sekali):
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
-
-```
-mint dev
+```bash
+npm i -g mintlify
 ```
 
-View your local preview at `http://localhost:3000`.
+### Preview Lokal
 
-## Publishing changes
+Jalankan di root repo (tempat `docs.json` berada):
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+```bash
+mintlify dev
+```
 
-## Need help?
+Preview tersedia di `http://localhost:3000`.
 
 ### Troubleshooting
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+- Jika env dev tidak berjalan: jalankan `mintlify update` untuk update ke versi terbaru
+- Jika halaman 404: pastikan ada file `docs.json` di root folder
 
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
+---
+
+## Deploy
+
+Perubahan di-deploy otomatis ke **https://docs.mazid.id** setelah push ke branch `main` (1–2 menit).
+
+### GitHub Integration
+
+Pastikan Mintlify GitHub App sudah terpasang di [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
+
+### Konvensi Commit Message
+
+```bash
+# Menambah konten baru
+docs: tambah panduan presensi
+
+# Memperbaiki konten
+docs: update alur PPDB fase 2
+
+# Memperbaiki link atau error teknis
+fix: perbaiki broken link di halaman SPP
+
+# Konfigurasi atau metadata
+chore: update navigasi docs.json
+```
+
+---
+
+## Struktur Repo
+
+```
+mazid-docs/
+├── docs.json                 ← Konfigurasi Mintlify (navigasi, tema, warna, dll)
+├── README.md                 ← File ini
+├── favicon.svg
+├── logo/                     ← Logo light/dark
+├── pengantar.mdx             ← Homepage docs ("Apa Itu Mazid?")
+├── mulai-cepat.mdx           ← Onboarding 5 menit untuk admin
+├── panduan-admin/            ← Panduan lengkap Admin Lembaga
+├── ppdb/                     ← Modul PPDB (pendaftaran online)
+├── portal-ortu/              ← Panduan Portal Orang Tua / Wali
+├── subscription/             ← Paket & billing Mazid
+├── api-reference/            ← (Dikembangkan belakangan)
+└── snippets/                 ← Konten reusable antar halaman
+```
+
+---
+
+## Kontribusi & Editing
+
+### Hal yang Wajib Diikuti
+
+1. **Bahasa:** Gunakan Bahasa Indonesia yang formal namun santai
+2. **Terminologi:** Konsisten dengan istilah domain Mazid (lihat `AGENTS.md` untuk daftar lengkap)
+   - `santri` bukan `siswa`
+   - `lembaga` bukan `sekolah`
+   - `kode unik` bukan `kode pembayaran`
+3. **Format Halaman:** Setiap file `.mdx` wajib dimulai dengan frontmatter:
+   ```mdx
+   ---
+   title: "Judul Halaman"
+   description: "Deskripsi singkat satu kalimat."
+   ---
+   ```
+
+4. **Komponen:** Gunakan komponen Mintlify (`<Note>`, `<Warning>`, `<Tip>`, `<Steps>`, dll) untuk clarity
+
+Baca **`AGENTS.md`** di root repo untuk konvensi lengkap dan petunjuk detail.
+
+### Validasi
+
+```bash
+# Cek broken links sebelum push
+mintlify broken-links
+```
+
+---
+
+## Link & Referensi
+
+- **Website Mazid:** https://mazid.id
+- **Dokumentasi Live:** https://docs.mazid.id
+- **Dashboard App:** https://app.mazid.id
+- **Email:** hello@mazid.id
+- **Mintlify Docs:** https://mintlify.com/docs
+- **Repo Konteks:** Baca `AGENTS.md` untuk spesifikasi lengkap proyek
+
+---
+
+## Lisensi
+
+Lihat file `LICENSE` untuk detail lisensi.
