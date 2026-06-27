@@ -137,7 +137,7 @@ mintlify broken-links
 
 - **Website Mazid:** https://mazid.id
 - **Dokumentasi Live:** https://panduan.mazid.id
-- **Dashboard App:** https://app.mazid.id
+- **Dashboard App:** https://dashboard.mazid.id
 - **Email:** hello@mazid.id
 - **Mintlify Docs:** https://mintlify.com/docs
 - **Repo Konteks:** Baca `AGENTS.md` untuk spesifikasi lengkap proyek

@@ -131,7 +131,7 @@ mazid-docs/
     "dark": "#00B87A"
   },
   "topbarLinks": [
-    { "name": "Dashboard", "url": "https://app.mazid.id" }
+    { "name": "Dashboard", "url": "https://dashboard.mazid.id" }
   ],
   "topbarCtaButton": {
     "name": "Daftar Gratis",
@@ -402,7 +402,7 @@ Live di docs.mazid.id
 - ❌ Jangan sebutkan nama database, tabel, atau kode internal di halaman panduan user
 - ❌ Jangan pakai kata "klik" — pakai "pilih" atau "tekan"
 - ❌ Jangan buat halaman tanpa frontmatter `title` dan `description`
-- ❌ Jangan hardcode URL `app.mazid.id` sebagai contoh subdomain lembaga — pakai `namalembaga.mazid.id`
+- ❌ Jangan hardcode URL `dashboard.mazid.id` sebagai contoh subdomain lembaga — pakai `namalembaga.mazid.id`
 - ❌ Jangan campur istilah: pilih satu (contoh: selalu "santri", bukan ganti-ganti dengan "siswa")
 - ❌ Jangan buat halaman API Reference sebelum backend API selesai dan stabil
 
