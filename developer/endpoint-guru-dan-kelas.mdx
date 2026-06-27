@@ -1,0 +1,102 @@
+---
+title: "Endpoint: Data Pengajar (Guru) & Kelas"
+description: "Ambil daftar pengajar dan struktur kelas sebuah lembaga melalui API."
+---
+
+# Endpoint: Data Pengajar (Guru) & Kelas
+
+## Daftar Pengajar
+
+```
+GET /api/v1/external/institutions/{slug}/teachers
+```
+
+**Scope required:** `teachers:read`
+
+### Query Parameters
+
+| Parameter | Tipe | Default | Keterangan |
+|-----------|------|---------|-----------|
+| `page` | integer | 1 | Halaman |
+| `per_page` | integer | 20 | Jumlah per halaman (maks. 100) |
+| `search` | string | — | Cari berdasarkan nama atau NIP |
+| `department` | string | — | Filter per departemen/unit |
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "nip": "198501012010011001",
+      "name": "Ustadz Abdullah",
+      "position": "Pengajar Tahfidz",
+      "department": "Tahfidz",
+      "status": 1
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 20,
+    "total": 24
+  },
+  "message": "OK"
+}
+```
+
+---
+
+## Daftar Kelas
+
+```
+GET /api/v1/external/institutions/{slug}/classrooms
+```
+
+**Scope required:** `classrooms:read`
+
+### Query Parameters
+
+| Parameter | Tipe | Default | Keterangan |
+|-----------|------|---------|-----------|
+| `page` | integer | 1 | Halaman |
+| `per_page` | integer | 20 | Jumlah per halaman (maks. 100) |
+| `level_id` | uuid | — | Filter per jenjang/tingkat akademik |
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "name": "VII-A",
+      "level_id": "uuid",
+      "capacity": 30,
+      "homeroom_teacher_id": "uuid",
+      "student_count": 28
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "per_page": 20,
+    "total": 12
+  },
+  "message": "OK"
+}
+```
+
+<Tip>
+`homeroom_teacher_id` mengacu pada `id` di endpoint Daftar Pengajar di atas — gunakan untuk menampilkan nama wali kelas di sisi aplikasi Anda.
+</Tip>
+
+<Note>
+Endpoint `teachers` dan `classrooms` hanya menyediakan data ringkas (read-only). Jika Anda butuh field tambahan, sampaikan ke tim Mazid lewat [hello@mazid.id](mailto:hello@mazid.id).
+</Note>
+
+## Langkah Berikutnya
+
+- [Endpoint Data PPDB →](/developer/endpoint-ppdb)
+- [Contoh Kode Integrasi →](/developer/contoh-kode)

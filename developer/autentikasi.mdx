@@ -1,0 +1,93 @@
+---
+title: "Autentikasi & API Key"
+description: "Cara mendapatkan API key Mazid dan menyertakannya di setiap request."
+---
+
+# Autentikasi & API Key
+
+Semua request ke API eksternal Mazid wajib disertai **API Key** yang valid.
+
+## Cara Mendapatkan API Key
+
+<Steps>
+  <Step title="Hubungi tim Mazid">
+    Kirim email ke [hello@mazid.id](mailto:hello@mazid.id) dengan informasi: nama aplikasi/perusahaan, lembaga yang akan diintegrasikan (atau akses platform-level jika untuk banyak lembaga), dan data apa saja yang dibutuhkan.
+  </Step>
+  <Step title="Tim Mazid membuat API Client">
+    Tim Mazid akan membuat **API Client** baru melalui panel super-admin internal, lalu mengirimkan ke Anda:
+    - **API Key** (diawali prefix `mzd_`) — dipakai di setiap request
+    - **API Secret** — simpan dengan aman, hanya ditampilkan **sekali** saat dibuat
+
+    <Warning>
+    API Secret tidak bisa dilihat ulang setelah dibuat. Jika hilang, hubungi tim Mazid untuk membuat API Client baru.
+    </Warning>
+  </Step>
+  <Step title="Konfigurasi yang ditentukan tim Mazid">
+    Setiap API Client dikonfigurasi dengan:
+    - **Cakupan lembaga** — satu lembaga tertentu, atau akses platform (lintas lembaga)
+    - **Scopes** — izin akses per jenis data (lihat tabel di bawah)
+    - **Allowed origins** — domain yang diizinkan jika request dari browser (CORS)
+    - **Rate limit** — jumlah request per menit (default 60)
+    - **Masa aktif** — opsional, bisa diset kadaluarsa
+  </Step>
+</Steps>
+
+## Menyertakan API Key di Request
+
+Sertakan API Key di **header** `X-API-Key` pada setiap request:
+
+```http
+X-API-Key: mzd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+<Warning>
+API Key **hanya** diterima lewat header `X-API-Key`. Mengirim API key sebagai query parameter (`?api_key=...`) akan ditolak dengan `401 Unauthorized`, karena key di URL bisa bocor ke access log server. Selalu gunakan HTTPS.
+</Warning>
+
+### Contoh Request
+
+```bash
+curl https://dashboard.mazid.id/api/v1/external/institutions/nama-lembaga \
+  -H "X-API-Key: mzd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Accept: application/json"
+```
+
+## Scopes & Izin Akses
+
+API Key hanya bisa mengakses endpoint sesuai scope yang diberikan saat dibuat oleh tim Mazid.
+
+| Scope | Endpoint yang dapat diakses |
+|-------|------------------------------|
+| `institution:read` | Info lembaga |
+| `students:read` | Daftar santri |
+| `bills:read` | Tagihan santri |
+| `teachers:read` | Daftar guru |
+| `classrooms:read` | Daftar kelas |
+| `ppdb:external:read` | Data pendaftaran PPDB |
+| `payments:read` | Riwayat pembayaran *(scope tersedia, endpoint belum aktif)* |
+| `attendance:read` | Data kehadiran *(scope tersedia, endpoint belum aktif)* |
+| `*` | Semua endpoint (full access) |
+
+Jika request mengarah ke endpoint yang scope-nya tidak dimiliki, API mengembalikan `403`:
+
+```json
+{
+  "message": "API key tidak memiliki izin 'students:read'.",
+  "data": null
+}
+```
+
+## CORS untuk Integrasi Frontend
+
+Jika aplikasi Anda memanggil API langsung dari browser (bukan server-to-server), domain (origin) aplikasi Anda harus didaftarkan oleh tim Mazid sebagai **allowed origin** saat pembuatan API Client.
+
+<Tip>
+Untuk **request server-to-server** (backend ke backend), CORS tidak berlaku — cukup kirim header `X-API-Key` dari server Anda tanpa perlu pendaftaran domain.
+</Tip>
+
+Request dari domain yang belum terdaftar akan ditolak dengan `403 Forbidden` tanpa header `Access-Control-Allow-Origin`.
+
+## Langkah Berikutnya
+
+- [Endpoint Info Lembaga →](/developer/endpoint-lembaga)
+- [Error & Rate Limit →](/developer/error-dan-rate-limit)

@@ -1,0 +1,72 @@
+---
+title: "Pengantar API Developer"
+description: "Integrasikan sistem Anda dengan data inti Mazid—lembaga, santri, guru, dan kelas—melalui REST API."
+---
+
+# Pengantar API Developer
+
+Mazid menyediakan **API eksternal** untuk mitra dan tim teknis yang ingin mengintegrasikan sistem mereka (ERP, aplikasi mobile, dashboard internal lembaga, dll) dengan data inti yang tersimpan di Mazid.
+
+<Note>
+Halaman ini dan halaman developer lainnya ditujukan untuk **developer/tim teknis**, jadi istilah teknis seperti API key, header, dan JSON dipakai apa adanya.
+</Note>
+
+## Untuk Siapa API Ini?
+
+- **Mitra integrasi** — aplikasi pihak ketiga yang bekerja sama dengan lembaga pengguna Mazid (contoh: aplikasi presensi terpisah, sistem akademik existing, dashboard yayasan)
+- **Tim IT internal lembaga** — yang ingin menarik data santri/keuangan ke sistem internal mereka sendiri
+- **Developer Mazid** — untuk membangun integrasi resmi (mobile app, portal tambahan, dll)
+
+## Data yang Bisa Diakses
+
+<CardGroup cols={2}>
+  <Card title="Info Lembaga" icon="building" href="/developer/endpoint-lembaga">
+    Profil dasar lembaga: nama, alamat, kontak
+  </Card>
+  <Card title="Data Santri" icon="users" href="/developer/endpoint-santri">
+    Daftar santri dan tagihan SPP per santri
+  </Card>
+  <Card title="Data Guru & Kelas" icon="chalkboard-user" href="/developer/endpoint-guru-dan-kelas">
+    Daftar pengajar dan struktur kelas
+  </Card>
+  <Card title="Data PPDB" icon="graduation-cap" href="/developer/endpoint-ppdb">
+    Data pendaftaran peserta didik baru
+  </Card>
+</CardGroup>
+
+## Spesifikasi Dasar
+
+| Item | Nilai |
+|------|-------|
+| **Base URL** | `https://dashboard.mazid.id` |
+| **Versi API** | `v1` |
+| **Format** | JSON |
+| **Autentikasi** | API Key via header `X-API-Key` |
+| **Prefix endpoint** | `/api/v1/external/...` |
+
+<Tip>
+Semua endpoint bersifat **read-only** (`GET`). API ini dirancang untuk integrasi baca data, bukan untuk menulis/mengubah data dari sistem eksternal.
+</Tip>
+
+## Mulai Integrasi
+
+<Steps>
+  <Step title="Dapatkan API Key">
+    Hubungi tim Mazid untuk didaftarkan sebagai API Client. Lihat [Autentikasi →](/developer/autentikasi)
+  </Step>
+  <Step title="Pilih endpoint yang dibutuhkan">
+    Setiap API key dibatasi oleh scope tertentu (misal hanya boleh baca data santri). Lihat daftar endpoint di atas.
+  </Step>
+  <Step title="Uji coba request">
+    Gunakan contoh kode di [Contoh Kode →](/developer/contoh-kode) untuk JavaScript, PHP, atau Python.
+  </Step>
+  <Step title="Pantau rate limit & error">
+    Setiap response memuat header rate limit. Lihat [Error & Rate Limit →](/developer/error-dan-rate-limit) untuk detail penanganan error.
+  </Step>
+</Steps>
+
+## Langkah Berikutnya
+
+- [Autentikasi & API Key →](/developer/autentikasi)
+- [Endpoint Info Lembaga →](/developer/endpoint-lembaga)
+- [Contoh Kode Integrasi →](/developer/contoh-kode)

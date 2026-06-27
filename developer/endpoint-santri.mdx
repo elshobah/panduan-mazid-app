@@ -1,0 +1,100 @@
+---
+title: "Endpoint: Data Santri & Tagihan"
+description: "Ambil daftar santri sebuah lembaga dan tagihan SPP per santri melalui API."
+---
+
+# Endpoint: Data Santri & Tagihan
+
+## Daftar Santri
+
+```
+GET /api/v1/external/institutions/{slug}/students
+```
+
+**Scope required:** `students:read`
+
+### Query Parameters
+
+| Parameter | Tipe | Default | Keterangan |
+|-----------|------|---------|-----------|
+| `page` | integer | 1 | Halaman |
+| `per_page` | integer | 20 | Jumlah per halaman (maks. 100) |
+| `search` | string | — | Cari berdasarkan nama atau NIS |
+| `classroom_id` | uuid | — | Filter per kelas |
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "nis": "2024001",
+      "name": "Ahmad Fauzi",
+      "gender": "male",
+      "classroom_id": "uuid",
+      "status": "active"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 5,
+    "per_page": 20,
+    "total": 98
+  },
+  "message": "OK"
+}
+```
+
+<Tip>
+Gunakan `classroom_id` bersama [endpoint Daftar Kelas](/developer/endpoint-guru-dan-kelas) untuk menampilkan santri terkelompok per kelas di sisi aplikasi Anda.
+</Tip>
+
+---
+
+## Tagihan Santri
+
+```
+GET /api/v1/external/institutions/{slug}/students/{student_id}/bills
+```
+
+**Scope required:** `bills:read`
+
+Mengambil seluruh tagihan SPP/biaya milik satu santri, beserta status pembayarannya.
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "bill_name": "SPP Bulan Juni 2026",
+      "amount": 500000,
+      "paid": 500000,
+      "remaining": 0,
+      "due_date": "2026-06-30",
+      "status": "paid"
+    },
+    {
+      "id": "uuid",
+      "bill_name": "Biaya Kegiatan",
+      "amount": 150000,
+      "paid": 0,
+      "remaining": 150000,
+      "due_date": "2026-07-15",
+      "status": "unpaid"
+    }
+  ],
+  "message": "OK"
+}
+```
+
+<Note>
+Nominal `amount`, `paid`, dan `remaining` belum termasuk **kode unik** 3 digit yang ditambahkan saat santri membayar via transfer bank. Lihat [Manajemen SPP & Keuangan](/panduan-admin/spp-dan-keuangan) untuk detail sistem kode unik.
+</Note>
+
+## Langkah Berikutnya
+
+- [Endpoint Guru & Kelas →](/developer/endpoint-guru-dan-kelas)
+- [Error & Rate Limit →](/developer/error-dan-rate-limit)

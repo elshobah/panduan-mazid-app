@@ -1,0 +1,54 @@
+---
+title: "Endpoint: Data Pendaftaran PPDB"
+description: "Ambil data pendaftaran peserta didik baru (PPDB) sebuah lembaga melalui API."
+---
+
+# Endpoint: Data Pendaftaran PPDB
+
+```
+GET /api/v1/external/institutions/{slug}/registrations
+```
+
+**Scope required:** `ppdb:external:read`
+
+Mengambil daftar pendaftar [PPDB](/ppdb/pengantar-ppdb) sebuah lembaga, termasuk status pendaftaran terkini.
+
+## Query Parameters
+
+| Parameter | Tipe | Keterangan |
+|-----------|------|-----------|
+| `status` | string | Filter status: `pending`, `reviewing`, `accepted`, `rejected`, `enrolment` |
+| `page` | integer | Halaman |
+| `per_page` | integer | Maks. 100 |
+
+## Response
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "registration_number": "REG-2026-0042",
+      "name": "Muhammad Ridho",
+      "status": "accepted",
+      "registered_at": "2026-06-01 08:30:00"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 2,
+    "per_page": 20,
+    "total": 35
+  },
+  "message": "OK"
+}
+```
+
+<Note>
+Status di atas adalah ringkasan. Untuk daftar status lengkap PPDB (termasuk tahap pembayaran dan ujian), lihat [Pengenalan PPDB Online](/ppdb/pengantar-ppdb#status-pendaftaran).
+</Note>
+
+## Langkah Berikutnya
+
+- [Error & Rate Limit →](/developer/error-dan-rate-limit)
+- [Contoh Kode Integrasi →](/developer/contoh-kode)

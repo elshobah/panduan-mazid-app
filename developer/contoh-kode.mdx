@@ -1,0 +1,111 @@
+---
+title: "Contoh Kode Integrasi"
+description: "Contoh request ke API eksternal Mazid menggunakan JavaScript, PHP, dan Python."
+---
+
+# Contoh Kode Integrasi
+
+<Tabs>
+  <Tab title="JavaScript / Fetch">
+    ```javascript
+    const MAZID_API_KEY = 'mzd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+    const BASE_URL = 'https://dashboard.mazid.id/api/v1/external';
+
+    async function getSantri(institutionSlug, page = 1) {
+      const res = await fetch(
+        `${BASE_URL}/institutions/${institutionSlug}/students?page=${page}&per_page=50`,
+        {
+          headers: {
+            'X-API-Key': MAZID_API_KEY,
+            'Accept': 'application/json',
+          },
+        }
+      );
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+
+      return res.json();
+    }
+    ```
+  </Tab>
+
+  <Tab title="PHP / Guzzle">
+    ```php
+    use GuzzleHttp\Client;
+
+    $client = new Client([
+        'base_uri' => 'https://dashboard.mazid.id',
+        'headers'  => [
+            'X-API-Key' => 'mzd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+            'Accept'    => 'application/json',
+        ],
+    ]);
+
+    $response = $client->get('/api/v1/external/institutions/nama-lembaga/students', [
+        'query' => ['per_page' => 50, 'page' => 1],
+    ]);
+
+    $data = json_decode($response->getBody(), true);
+    ```
+  </Tab>
+
+  <Tab title="Python / Requests">
+    ```python
+    import requests
+
+    API_KEY = 'mzd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+    BASE_URL = 'https://dashboard.mazid.id/api/v1/external'
+
+    headers = {
+        'X-API-Key': API_KEY,
+        'Accept': 'application/json',
+    }
+
+    response = requests.get(
+        f'{BASE_URL}/institutions/nama-lembaga/students',
+        headers=headers,
+        params={'per_page': 50, 'page': 1}
+    )
+
+    if response.status_code == 200:
+        data = response.json()
+        print(f"Total santri: {data['meta']['total']}")
+    else:
+        print(f"Error: {response.json()['message']}")
+    ```
+  </Tab>
+</Tabs>
+
+## Contoh Mengambil Guru & Kelas Sekaligus
+
+```javascript
+async function getStrukturKelas(institutionSlug) {
+  const [teachers, classrooms] = await Promise.all([
+    fetch(`${BASE_URL}/institutions/${institutionSlug}/teachers?per_page=100`, {
+      headers: { 'X-API-Key': MAZID_API_KEY, 'Accept': 'application/json' },
+    }).then((r) => r.json()),
+    fetch(`${BASE_URL}/institutions/${institutionSlug}/classrooms?per_page=100`, {
+      headers: { 'X-API-Key': MAZID_API_KEY, 'Accept': 'application/json' },
+    }).then((r) => r.json()),
+  ]);
+
+  return classrooms.data.map((c) => ({
+    ...c,
+    homeroom_teacher: teachers.data.find((t) => t.id === c.homeroom_teacher_id) ?? null,
+  }));
+}
+```
+
+<Warning>
+Jangan hardcode API key di kode frontend yang ter-bundle ke browser (contoh: SPA tanpa backend). Untuk integrasi yang berjalan di browser, panggil API dari backend Anda sendiri, atau pastikan domain frontend sudah didaftarkan sebagai allowed origin (lihat [Autentikasi & API Key](/developer/autentikasi#cors-untuk-integrasi-frontend)).
+</Warning>
+
+## Butuh Bantuan?
+
+Untuk mendaftarkan aplikasi sebagai mitra, menambah scope, atau pertanyaan teknis lainnya:
+
+- **Email:** [hello@mazid.id](mailto:hello@mazid.id)
+- **Dashboard:** [dashboard.mazid.id](https://dashboard.mazid.id)

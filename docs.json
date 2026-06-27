@@ -63,6 +63,24 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Developer",
+        "groups": [
+          {
+            "group": "Integrasi API",
+            "pages": [
+              "developer/pengantar",
+              "developer/autentikasi",
+              "developer/endpoint-lembaga",
+              "developer/endpoint-santri",
+              "developer/endpoint-guru-dan-kelas",
+              "developer/endpoint-ppdb",
+              "developer/error-dan-rate-limit",
+              "developer/contoh-kode"
+            ]
+          }
+        ]
       }
     ],
     "global": {
@@ -81,6 +99,11 @@
           "anchor": "PPDB",
           "href": "/ppdb/pengantar-ppdb",
           "icon": "graduation-cap"
+        },
+        {
+          "anchor": "Developer",
+          "href": "/developer/pengantar",
+          "icon": "code"
         }
       ]
     }

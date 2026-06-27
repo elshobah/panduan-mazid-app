@@ -1,0 +1,104 @@
+---
+title: "Error Handling & Rate Limit"
+description: "Format error standar, kode HTTP, dan batas rate limit API eksternal Mazid."
+---
+
+# Error Handling & Rate Limit
+
+## Rate Limiting
+
+Setiap API Client memiliki batas request per menit (default **60 req/menit**, bisa disesuaikan tim Mazid sesuai kebutuhan).
+
+Jika batas terlampaui, server mengembalikan:
+
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 30
+```
+
+Header respons yang selalu disertakan:
+
+| Header | Keterangan |
+|--------|-----------|
+| `X-RateLimit-Limit` | Batas maksimum per menit |
+| `X-RateLimit-Remaining` | Sisa request di window saat ini |
+| `Retry-After` | Detik hingga window reset (hanya muncul saat `429`) |
+
+<Tip>
+Cache response di sisi aplikasi Anda untuk data yang jarang berubah (misal info lembaga atau daftar kelas) agar tidak cepat menyentuh rate limit.
+</Tip>
+
+## Format Error Standar
+
+Semua error mengikuti format yang sama:
+
+```json
+{
+  "message": "Deskripsi error dalam Bahasa Indonesia",
+  "data": null
+}
+```
+
+## Kode HTTP
+
+| Kode | Keterangan |
+|------|-----------|
+| `200` | Sukses |
+| `401` | API Key tidak ada atau tidak valid |
+| `403` | API Key valid tapi tidak punya izin (scope/origin/lembaga) |
+| `404` | Resource tidak ditemukan |
+| `422` | Validasi input gagal |
+| `429` | Rate limit terlampaui |
+| `500` | Server error — hubungi tim Mazid |
+
+## Contoh Error Response
+
+**401 — API Key tidak valid:**
+```json
+{
+  "message": "API key tidak valid atau sudah dinonaktifkan.",
+  "data": null
+}
+```
+
+**403 — Origin tidak diizinkan:**
+```json
+{
+  "message": "Origin tidak diizinkan untuk API key ini.",
+  "data": null
+}
+```
+
+**403 — Scope tidak cukup:**
+```json
+{
+  "message": "API key tidak memiliki izin 'bills:read'.",
+  "data": null
+}
+```
+
+**404 — Lembaga tidak ditemukan:**
+```json
+{
+  "message": "Lembaga tidak ditemukan.",
+  "data": null
+}
+```
+
+## Pertanyaan Umum
+
+<AccordionGroup>
+  <Accordion title="Kenapa request saya selalu kena 401 walau API key sudah benar?">
+    Pastikan API key dikirim lewat header `X-API-Key`, bukan query parameter (`?api_key=...`) — query parameter ditolak demi keamanan. Pastikan juga belum melewati tanggal `expires_at` dan statusnya masih aktif.
+  </Accordion>
+  <Accordion title="Bagaimana cara menaikkan rate limit?">
+    Hubungi tim Mazid di hello@mazid.id dengan menyertakan kebutuhan volume request Anda. Rate limit per API Client bisa disesuaikan.
+  </Accordion>
+  <Accordion title="Apakah ada endpoint untuk menulis/mengubah data?">
+    Belum. Seluruh endpoint eksternal saat ini bersifat read-only (`GET`). Perubahan data hanya bisa dilakukan lewat panel admin Mazid.
+  </Accordion>
+</AccordionGroup>
+
+## Langkah Berikutnya
+
+- [Contoh Kode Integrasi →](/developer/contoh-kode)

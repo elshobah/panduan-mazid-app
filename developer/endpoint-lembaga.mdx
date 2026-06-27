@@ -1,0 +1,60 @@
+---
+title: "Endpoint: Info Lembaga"
+description: "Ambil profil dasar lembaga (nama, alamat, kontak) melalui API."
+---
+
+# Endpoint: Info Lembaga
+
+```
+GET /api/v1/external/institutions/{slug}
+```
+
+**Scope required:** `institution:read`
+
+Mengambil profil dasar satu lembaga berdasarkan `slug` (identifier unik lembaga, terlihat di URL portal `namalembaga.mazid.id`).
+
+## Response
+
+```json
+{
+  "data": {
+    "id": "019eac31-32e5-7251-a5c9-dea784571c60",
+    "name": "Pesantren Al-Hidayah",
+    "slug": "al-hidayah",
+    "type": "pesantren",
+    "address": "Jl. Raya Pesantren No. 1",
+    "city": "Bandung",
+    "province": "Jawa Barat",
+    "phone": "022-123456",
+    "email": "info@alhidayah.id",
+    "website": "https://alhidayah.id"
+  },
+  "message": "OK"
+}
+```
+
+| Field | Tipe | Keterangan |
+|-------|------|-----------|
+| `id` | uuid | ID unik lembaga |
+| `name` | string | Nama lembaga |
+| `slug` | string | Identifier di URL |
+| `type` | string | Jenis lembaga (`pesantren`, `madrasah`, dll) |
+| `address`, `city`, `province` | string | Alamat |
+| `phone`, `email`, `website` | string | Kontak |
+
+<Note>
+Jika API Key Anda dibatasi ke satu lembaga tertentu, request ke `slug` lembaga lain akan mengembalikan `403`.
+</Note>
+
+## Contoh Request
+
+```bash
+curl https://dashboard.mazid.id/api/v1/external/institutions/al-hidayah \
+  -H "X-API-Key: mzd_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Accept: application/json"
+```
+
+## Langkah Berikutnya
+
+- [Endpoint Data Santri →](/developer/endpoint-santri)
+- [Endpoint Guru & Kelas →](/developer/endpoint-guru-dan-kelas)
