@@ -21,6 +21,11 @@ GET /api/v1/external/institutions/{slug}/students
 | `per_page` | integer | 20 | Jumlah per halaman (maks. 100) |
 | `search` | string | — | Cari berdasarkan nama atau NIS |
 | `classroom_id` | uuid | — | Filter per kelas |
+| `updated_since` | datetime (ISO 8601) | — | Hanya santri yang diubah sejak waktu ini — untuk sinkronisasi inkremental |
+
+<Tip>
+Gunakan `updated_since` untuk sinkronisasi berkala tanpa harus menarik ulang seluruh data santri setiap kali. Simpan timestamp terakhir Anda melakukan sync, lalu kirim sebagai nilai `updated_since` pada request berikutnya. Format tanggal yang tidak valid akan diabaikan (request tetap berjalan tanpa filter ini, bukan error).
+</Tip>
 
 ### Response
 
@@ -91,7 +96,53 @@ Mengambil seluruh tagihan SPP/biaya milik satu santri, beserta status pembayaran
 ```
 
 <Note>
-Nominal `amount`, `paid`, dan `remaining` belum termasuk **kode unik** 3 digit yang ditambahkan saat santri membayar via transfer bank. Lihat [Manajemen SPP & Keuangan](/panduan-admin/spp-dan-keuangan) untuk detail sistem kode unik.
+Nominal `amount`, `paid`, dan `remaining` belum termasuk **kode unik** 3 digit yang ditambahkan saat santri membayar via transfer bank. Lihat [Manajemen SPP & Keuangan](/panduan-admin/spp-dan-keuangan) untuk detail sistem kode unik. `amount` adalah nominal akhir setelah diskon (jika ada) — `paid + remaining` selalu sama dengan `amount`.
+</Note>
+
+---
+
+## Data Wali/Orang Tua Santri
+
+```
+GET /api/v1/external/institutions/{slug}/students/{student_id}/guardians
+```
+
+**Scope required:** `guardians:read`
+
+Mengambil seluruh data wali (ayah, ibu, atau wali lain) yang terdaftar untuk satu santri. Satu santri bisa memiliki lebih dari satu wali — endpoint ini mengembalikan semuanya, dengan wali utama (`is_primary: true`) muncul lebih dulu.
+
+### Response
+
+```json
+{
+  "data": [
+    {
+      "id": "uuid",
+      "name": "Budi Santoso",
+      "relation": "father",
+      "phone": "081234567890",
+      "email": "budi@example.com",
+      "occupation": "Wiraswasta",
+      "address": "Jl. Merdeka No. 10, Bandung",
+      "is_primary": true
+    },
+    {
+      "id": "uuid",
+      "name": "Siti Aminah",
+      "relation": "mother",
+      "phone": "081298765432",
+      "email": null,
+      "occupation": "Ibu Rumah Tangga",
+      "address": "Jl. Merdeka No. 10, Bandung",
+      "is_primary": false
+    }
+  ],
+  "message": "OK"
+}
+```
+
+<Note>
+Mengembalikan array kosong (`"data": []`) jika santri belum memiliki data wali tercatat — bukan error.
 </Note>
 
 ## Langkah Berikutnya

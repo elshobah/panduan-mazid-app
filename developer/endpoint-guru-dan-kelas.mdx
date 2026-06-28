@@ -21,6 +21,7 @@ GET /api/v1/external/institutions/{slug}/teachers
 | `per_page` | integer | 20 | Jumlah per halaman (maks. 100) |
 | `search` | string | — | Cari berdasarkan nama atau NIP |
 | `department` | string | — | Filter per departemen/unit |
+| `updated_since` | datetime (ISO 8601) | — | Hanya data yang diubah sejak waktu ini — untuk sinkronisasi inkremental |
 
 ### Response
 
@@ -63,6 +64,7 @@ GET /api/v1/external/institutions/{slug}/classrooms
 | `page` | integer | 1 | Halaman |
 | `per_page` | integer | 20 | Jumlah per halaman (maks. 100) |
 | `level_id` | uuid | — | Filter per jenjang/tingkat akademik |
+| `updated_since` | datetime (ISO 8601) | — | Hanya kelas yang diubah sejak waktu ini — untuk sinkronisasi inkremental |
 
 ### Response
 
